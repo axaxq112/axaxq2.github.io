@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>摄像头监控</title>
+	<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<style type="text/css">
+video,canvas{border: 1px solid #ccc;}
+</style>
+<body>
+	<center>
+	<h3>实时摄像头</h3>
+    <video id="video" width="320" height="240" autoplay></video>
+	<br><hr>
+	<h3>实时提交照片预览（3秒/次）</h3>
+	<canvas id="canvas" width="320" height="240" ></canvas><br>
+    <button id="snap" style="display:none;">获取照片(程序自动点击)</button>
+	
+	<hr>
+	<div id="area-3" style="display:none;">
+	<h3>canvas转png预览区</h3>
+	<img id="png" />
+	</div>
+	<hr>
+	<div id="pngHolder"></div>
+	</center>
+</body>
+<script type="text/javascript">
+function getDate(){
+	var myDate = new Date();
+	var year = myDate.getFullYear();  // 获取完整的年份(4位,1970-????)
+	var month = myDate.getMonth();    // 获取当前月份(0-11,0代表1月)
+	var date = myDate.getDate();    // 获取当前日(1-31)
+	var hour = myDate.getHours();    // 获取当前小时数(0-23)
+	var minute = myDate.getMinutes();   // 获取当前分钟数(0-59)
+	var sec = myDate.getSeconds(); 
+	var ret = year+"年"+month+"月"+date+"日"+" "+hour+"时"+minute+"分"+sec+"秒";
+	return ret;
+}
+
+
+var camera = {
+    video: document.getElementById('video'),
+    canvas:  document.getElementById('canvas'),
+    btn: document.getElementById("snap"),
+    font: "14px microsoft yahei",
+    style: "rgba(255,255,255,0.9)",
+    //text: getDate(),
+    height: 240,
+    width: 320,
+    draw_pic: function(){
+        var self = this;
+        var context = self.canvas.getContext('2d');
+        context.drawImage(self.video, 0, 0, self.width, self.height);
+        context.font = self.font;
+        context.fillStyle = self.style;
+        context.fillText(getDate(), self.width - 200 , self.height - 10);
+    },
+    bind: function(){
+        var self = this;
+        self.btn.addEventListener("click", function() {
+            self.draw_pic();
+        });
+    },
+    init: function(){
+        var video = this.video;
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                video.srcObject = stream;
+                video.play();
+            });
+        }
+        this.bind();
+    }
+};
+
+camera.init();
+
+function uploadphoto(){
+	$("#snap").click();
+	//document.getElementById("pngHolder").appendChild(canvas2image());
+	var imgbase64 = canvas2image();
+	var imgenc = encodeURIComponent(imgbase64);
+	//console.log(imgenc);
+	$("#png").attr("src", imgbase64);
+	var data = {};
+    data.img = imgbase64;
+	$.ajax({
+            type : "post",
+            url : "getphoto.php",
+            data : data,
+            success : function(result) {
+                if(result =="success"){
+					console.log("%c 提交成功"+getDate(),"color:green;");
+				}else{
+					console.log("%c 提交失败"+getDate(),"color:red;");
+				}
+            },
+     });
+}
+
+function canvas2image(){
+	var canvas = $('#canvas')[0];
+	//var image = new Image();
+	//image.src = canvas.toDataURL("image/png");
+	//return image;
+	return canvas.toDataURL("image/png");
+}
+
+
+
+window.onload = function(){
+	//setTimeout("console.log('五秒时间初始化摄像头');", 5000);
+	setInterval(uploadphoto,3000);
+}
+
+</script>
+</html>
