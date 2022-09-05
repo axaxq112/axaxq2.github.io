@@ -17,65 +17,10 @@
   </picture>
   <input type="file" id="upload-file" name="upload-file" style="display: none;" />
   <div id="main-box" class="main-box">
-    <button id="send" class="main-btn" onclick="choose()">选择</button>
     <button id="receive" class="main-btn" onclick="receive()">接收</button>
   </div>
   <div>
     <script>
-      $("input[name='upload-file']").on("change", function() {
-        var filePath = $(this).val();
-        if (filePath) {
-          //$(".fileerrorTip").html("").hide();
-          var arr = filePath.split('\\');
-          var fileName = arr[arr.length - 1];
-          layer.msg(fileName);
-          var size1 = $("input[name='upload-file']")[0].files[0].size;
-        if (size1>1073741824) {
-        	layer.alert("上传文件不能大于1GB");
-        	return false;
-        }
-          ajax(); //调用上传文件
-        } else {
-          //$(".showFileName").html("");
-          layer.alert("请选择一个文件");
-          return false;
-        }
-      });
-
-
-      function choose() {
-        var file = document.getElementById("upload-file");
-        file.click();
-      }
-
-      function ajax() {
-        boo1 = true;
-        var type = "file";
-        var formData = new FormData();
-        formData.append(type, $("#upload-file")[0].files[0]);
-
-        var wait = layer.msg('上传中(若过久请刷新重试)..', {
-          icon: 16,
-          shade: 0.3,
-          time: false
-        });
-        $.ajax({
-          type: "post",
-          url: "exec.php?mod=upload",
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(data) {
-            layer.close(wait);
-            if (data.code == "200") {
-              layer.alert("提取码：" + data.src);
-            } else if (data.code == "500") {
-              layer.alert("上传失败：" + data.src);
-            }
-          }
-        });
-      }
-
       function receive() {
         var wait = layer.msg('查询中..', {
           icon: 16,
@@ -101,8 +46,8 @@
                 layer.open({
                   type: 1,
                   area: ['500px', '300px'],
-                  skin: 'layui-layer-demo', //样式类名
-                  closeBtn: 0, //不显示关闭按钮
+                  skin: 'layui-layer-demo',
+                  closeBtn: 0,
                   anim: 2,
                   title: '查询成功',
                   shadeClose: true, //开启遮罩关闭
