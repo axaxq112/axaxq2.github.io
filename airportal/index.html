@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="description" content="AirPortal（空投）是一个可以跨设备传输文件的网站。只要您的设备联网，您就可以通过它在任意系统、任意设备间传输文件。无需登录或注册，只需打开 AirPortal、直接上传文件、记住所给的取件码或直接扫描二维码即可在另一台设备上下载文件。" />
   <meta name="renderer" content="webkit" />
   <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -11,14 +10,13 @@
   <script src="static/js/jquery.min.js"></script>
   <script src="static/js/layer.min.js"></script>
 </head>
-<body class="">
+<body>
   <picture class="logo-box">
     <img src="static/img/logo.png" />
   </picture>
   <input type="file" id="upload-file" name="upload-file" style="display: none;" />
   <div id="main-box" class="main-box">
     <button id="send" class="main-btn" onclick="choose()">选择</button>
-    <!-- <button id="receive" class="main-btn" onclick="ajax()" style="display: none;">发送</button>  -->
     <button id="receive" class="main-btn" onclick="receive()">接收</button>
   </div>
   <div>
@@ -31,16 +29,10 @@
           var fileName = arr[arr.length - 1];
           layer.msg(fileName);
           var size1 = $("input[name='upload-file']")[0].files[0].size;
-        if (size1>2147483648) {
-        	layer.alert("上传文件不能大于2GB!");
+        if (size1>1073741824) {
+        	layer.alert("上传文件不能大于1GB");
         	return false;
         }
-        //判断文件类型
-        // var fileName1 = $file1.substring($file1.lastIndexOf(".") + 1).toLowerCase();
-        // if(fileName1 != "xls" && fileName1 !="xlsx"){
-        //   	alert("请选择允许的文件（xls、xlsx）");				
-        // 	return false;
-        // }
           ajax(); //调用上传文件
         } else {
           //$(".showFileName").html("");
