@@ -12,7 +12,7 @@ def randomCode():
     return retStr
 
 def getFileListJson (url):
-        retJson = {'files':[]}
+        retJson = {"files":[]}
         file  = os.listdir(url)
         for f in file:
                 real_url = path.join (url , f)
@@ -29,5 +29,8 @@ def getFileListJson (url):
         return str(retJson)
 
 if __name__ == "__main__":
-    a = getFileListJson("./files")
-    print(a)
+    tmp1 = getFileListJson("./files")
+    file = open('data/filelist.json', 'w')
+    file.write(tmp1)
+    file.close()
+    print("Success")
