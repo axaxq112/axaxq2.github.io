@@ -29,6 +29,8 @@
   </div>
   <div>
     <script>
+      var retJson;
+
       function receive() {
         var wait = layer.msg('查询中..', {
           icon: 16,
@@ -49,6 +51,7 @@
             url: "data/filelist.json",
             dataType : "json",
             success: function (data) {
+              retJson = data
               console.log(data);
               layer.close(wait);
               // if (data.code == "200") {
