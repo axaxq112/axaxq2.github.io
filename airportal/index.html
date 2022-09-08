@@ -51,10 +51,13 @@
           $.ajax({
             type: "get",
             url: "data/filelist.json",
-            dataType : "text",
+            dataType : "json",
             success: function (data) {
               retJson = data
               console.log(data);
+              console.log(data.length);
+
+
               layer.close(wait);
               // if (data.code == "200") {
               //   layer.open({
