@@ -62,8 +62,8 @@
             url: "data/filelist.json",
             dataType : "text",
             success: function (data) {
-              layer.close(wait);
-              
+              // layer.close(wait);
+
               retJson = json2Array(data);
               retFiles = retJson['files'];
               console.log(retFiles);
