@@ -31,8 +31,17 @@
   </div>
   <div>
     <script>
-      var retJson;
-
+      var retJson;          
+      function json2Array(jsonData){
+            var arrayData = [];
+            var j = 0;
+           for(var index in jsonData){
+               arrayData[j] = jsonData[index];
+               j++;
+           }
+            return arrayData;
+        }
+   
       function receive() {
         var wait = layer.msg('查询中..', {
           icon: 16,
@@ -53,10 +62,9 @@
             url: "data/filelist.json",
             dataType : "json",
             success: function (data) {
-              retJson = data
-              console.log(data);
-              console.log(data.length);
-
+              retJson = json2Array(data);
+              retFiles = retJson['files'];
+              console.log(retFiles);
 
               layer.close(wait);
               // if (data.code == "200") {
