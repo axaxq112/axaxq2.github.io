@@ -1,9 +1,12 @@
 # 本程序用于生成 data/filelist.json
 # 想要存储的文件全部放在files目录下（文件大小 <10MB 必须放于根目录）
 # 生成json后，Commit 然后 Push Origin 即可
+from __future__ import unicode_literals
 import os
 from os import path
 import random
+import json
+
 
 def randomCode():
     alphabet = 'abcdefghijklmnopqrstuvwxyz1234567890'
@@ -26,7 +29,8 @@ def getFileListJson (url):
                 else:
                         print("跳过文件夹: '{}'".format(f))
                         pass
-        return str(retJson)
+        retStr = json.dumps(retJson,ensure_ascii=False)
+        return retStr
 
 if __name__ == "__main__":
     tmp1 = getFileListJson("./files")
