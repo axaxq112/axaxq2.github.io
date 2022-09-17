@@ -60,13 +60,15 @@
           $.ajax({
             type: "get",
             url: "data/filelist.json",
+            cache : false,
+            dataType : "json",
             success: function (data) {
               console.log(data);
               layer.close(wait);
-              
-              retJson = JSON.stringify(data);
-              retJson = json2Array(data);
-              retFiles = retJson['files'];
+
+              // retJson = JSON.stringify(data);
+              // retJson = json2Array(data);
+              retFiles = data['files'];
               console.log(retFiles);
 
               // if (data.code == "200") {
